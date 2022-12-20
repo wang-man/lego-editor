@@ -11,11 +11,7 @@
       <p>Some contents...</p>
       <p>Some contents...</p>
     </a-drawer>
-    <a-modal
-      title="Title"
-      v-model:visible="showModal"
-      @ok="handleOk"
-    >
+    <a-modal title="Title" v-model:visible="showModal" @ok="handleOk">
       <p>发布成功</p>
     </a-modal>
     <a-layout>
@@ -28,7 +24,9 @@
           :style="{ lineHeight: '64px' }"
         >
           <a-menu-item key="1">
-            <a-button type="primary" @click="visible = true">预览和设置</a-button>
+            <a-button type="primary" @click="visible = true"
+              >预览和设置</a-button
+            >
           </a-menu-item>
           <a-menu-item key="2">
             <a-button type="primary">保存</a-button>
@@ -45,9 +43,16 @@
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '90vh' }"
+          :style="{
+            background: '#fff',
+            padding: '24px',
+            margin: 0,
+            minHeight: '90vh',
+          }"
         >
-          Content main editor is here baby
+          <div v-for="component in components" :key="component.id">
+            {{ component.props.text }}
+          </div>
         </a-layout-content>
       </a-layout>
       <a-layout-sider width="300" style="background: #fff">
@@ -65,22 +70,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from "vue";
+import { useStore } from "vuex";
+import { GlobalDataProps } from "../store";
 export default defineComponent({
-  name: 'Home',
-  setup () {
-    const visible = ref(false)
-    const showModal = ref(false)
+  name: "Editor",
+  setup() {
+    const visible = ref(false);
+    const showModal = ref(false);
     const handleOk = () => {
-      showModal.value = false
-    }
+      showModal.value = false;
+    };
+    const store = useStore<GlobalDataProps>();
+    const components = computed(() => store.state.editor.components);
+
     return {
+      components,
       visible,
       showModal,
-      handleOk
-    }
-  }
-})
+      handleOk,
+    };
+  },
+});
 </script>
 
 <style scoped>

@@ -1,12 +1,16 @@
 import { createStore } from 'vuex'
+import editor, { EditorProps } from './editor'
+export interface GlobalDataProps {
+  editor: EditorProps;
+}
 
 export default createStore({
-  state: {
-  },
   mutations: {
   },
   actions: {
   },
   modules: {
+    editor
   }
 })
+
