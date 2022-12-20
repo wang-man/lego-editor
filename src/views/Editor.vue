@@ -50,9 +50,12 @@
             minHeight: '90vh',
           }"
         >
-          <div v-for="component in components" :key="component.id">
-            {{ component.props.text }}
-          </div>
+          <component
+            :is="component.name"
+            v-bind="component.props"
+            v-for="component in components"
+            :key="component.id"
+          />
         </a-layout-content>
       </a-layout>
       <a-layout-sider width="300" style="background: #fff">
@@ -72,9 +75,14 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useStore } from "vuex";
+import LText from "../components/LText.vue";
 import { GlobalDataProps } from "../store";
+
 export default defineComponent({
   name: "Editor",
+  components: {
+    LText,
+  },
   setup() {
     const visible = ref(false);
     const showModal = ref(false);
